@@ -84,12 +84,12 @@ const ActionButtons = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: ${props => props.variant === 'secondary' 
-    ? props.theme.colors.background 
-    : props.theme.colors.primary};
-  color: ${props => props.variant === 'secondary' 
-    ? props.theme.colors.text 
-    : 'white'};
+  background-color: ${props => props.variant === 'secondary'
+        ? props.theme.colors.background
+        : props.theme.colors.primary};
+  color: ${props => props.variant === 'secondary'
+        ? props.theme.colors.text
+        : 'white'};
   padding: ${props => props.theme.space.small} ${props => props.theme.space.medium};
   border-radius: 0.375rem;
   border: none;

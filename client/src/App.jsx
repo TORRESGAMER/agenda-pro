@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import { useState } from 'react';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 
@@ -30,8 +31,8 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-  // Mock do estado de autenticação (substitua por sua lógica real de autenticação)
-  const isAuthenticated = true;
+  // Verifica se existe um token no localStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
 
   return (
     <ThemeProvider theme={theme}>

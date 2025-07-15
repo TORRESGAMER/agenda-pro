@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -111,6 +111,17 @@ const Button = styled.button`
   &:hover {
     opacity: 0.9;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: ${props => props.theme.colors.error};
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 `;
 
 const SignupText = styled.div`
@@ -120,6 +131,7 @@ const SignupText = styled.div`
 `;
 
 const Login = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -133,9 +145,40 @@ const Login = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Dados do formulário:', formData);
+        setError('');
+        setIsLoading(true);
+
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao fazer login');
+            }
+
+            // Salvar o token no localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+
+            // Redirecionar para o dashboard
+            navigate('/dashboard');
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -180,8 +223,10 @@ const Login = () => {
                         Forgot password?
                     </StyledLink>
 
-                    <Button type="submit">
-                        Login
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                    
+                    <Button type="submit" disabled={isLoading}>
+                        {isLoading ? 'Entrando...' : 'Login'}
                     </Button>
 
                     <SignupText>
