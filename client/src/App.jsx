@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+
+const theme = {
+  colors: {
+    primary: '#007AFF',
+    background: '#F5F5F5',
+    text: '#333333',
+    error: '#FF3B30',
+    success: '#34C759',
+  },
+  fonts: {
+    body: 'Inter, system-ui, sans-serif',
+  },
+  space: {
+    small: '0.5rem',
+    medium: '1rem',
+    large: '2rem',
+  }
+};
+
+const AppWrapper = styled.div`
+  width: 100%;
+  height: 100vh;
+  background-color: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-family: ${props => props.theme.fonts.body};
+`;
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Mock do estado de autenticação (substitua por sua lógica real de autenticação)
+  const isAuthenticated = false;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <ThemeProvider theme={theme}>
+      <AppWrapper>
+        <Router>
+          <Routes>
+            {/* Rota pública */}
+            <Route
+              path="/"
+              element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />}
+            />
+
+            {/* Rotas protegidas */}
+            <Route
+              path="/dashboard"
+              element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+            />
+          </Routes>
+        </Router>
+      </AppWrapper>
+    </ThemeProvider>
   )
 }
 
