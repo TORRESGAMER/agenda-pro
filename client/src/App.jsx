@@ -31,7 +31,7 @@ const AppWrapper = styled.div`
 
 function App() {
   // Mock do estado de autenticação (substitua por sua lógica real de autenticação)
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   return (
     <ThemeProvider theme={theme}>

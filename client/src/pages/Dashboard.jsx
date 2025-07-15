@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { Calendar, Users, Plus } from 'lucide-react';
 import styled from 'styled-components';
 
+const DashboardWrapper = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background-color: white;
+`;
+
 const Header = styled.header`
   border-bottom: 1px solid ${props => props.theme.colors.background};
 `;
@@ -110,7 +116,7 @@ const Dashboard = () => {
     });
 
     return (
-        <AppWrapper>
+        <DashboardWrapper>
             <Header>
                 <HeaderContent>
                     <Logo>
@@ -150,7 +156,7 @@ const Dashboard = () => {
                     </Button>
                 </ActionButtons>
             </MainContent>
-        </AppWrapper>
+        </DashboardWrapper>
     );
 };
 
